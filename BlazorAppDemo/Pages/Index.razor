@@ -1,0 +1,43 @@
+﻿@page "/"
+@using Microsoft.AspNetCore.Html
+<h3>
+    Hello, @username.ToString() => @Getusername();
+    
+</h3>
+<button @onclick="ChangeName">Click 1</button>
+<button @onclick="@(() => {username = "Adam";})">Click 2</button>
+<p>@TestNum</p>
+<em>@(TestNum == 1 ? new HtmlString("hi") : new HtmlString("&nbsp;")) </em>
+@(TernaryOperator == "Raw" ? new HtmlString("<p>Raw HTML</p>") : new HtmlString(""))
+@for (int i = 0; i < name.Count(); i++)
+{
+    <div>
+        @name[i]
+    </div>
+}
+@foreach (var item in name)
+{
+    <span>@item.ToUpper()</span>
+}
+@code{
+    private List<string>? name = null;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        name = new()
+        {
+            "Base1",
+            "Base1",
+            "Base1",
+            "Base1",
+            "Base1",
+            "Base1",
+        };
+    }
+    private string username = "john";
+    private int TestNum { get; set; } = 1;
+    private string TernaryOperator = "Raw";
+    private string Getusername() => $"{username} Thomas";
+    private void ChangeName() => username = "Peter";
+
+}
