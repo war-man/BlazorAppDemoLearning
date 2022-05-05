@@ -1,0 +1,56 @@
+﻿@using BlazorAppDemo.Models
+<p>
+    <b>Name:</b><span>@FirstName @LastName</span><br/>
+    @if (DisplayEmail.GetValueOrDefault())
+    {
+       <b>Email:<span>@Email</span></b>
+    }
+    else
+    {
+       <b>Email:<span> is hidden</span></b>        
+    }
+</p>
+
+<p>
+    <b>Name1:</b><span>@Contact?.FirstName @Contact?.LastName</span><br/>
+    @if (DisplayEmail.GetValueOrDefault())
+    {
+       <b>Email1:<span>@Contact?.Email</span></b>
+    }
+    else
+    {
+       <b>Email1:<span> is hidden</span></b>        
+    }
+</p>
+@if (DisplayInfo.GetValueOrDefault() == true)
+{
+    <span>This email @Contact?.Email Created By @Contact?.GetFullName()</span>
+}
+else
+{
+    <span>Show Result</span>
+}
+<br/>
+<button @onclick="@(() => DisplayInfo = !DisplayInfo)">
+    Show Info
+</button>
+<button @onclick="@(() => DeleteCurrentContact.InvokeAsync(Contact))">
+    Delete
+</button>
+
+@code {
+    [Parameter]
+    public string FirstName { get; set; } = String.Empty;
+    [Parameter]
+    public string LastName { get; set; } = String.Empty;
+    [Parameter]
+    public string Email { get; set; } = String.Empty;
+    [Parameter]
+    public Contact? Contact { get; set; } = null;
+    [Parameter]
+    public bool? DisplayEmail { get; set; } = false;
+    [Parameter]
+    public EventCallback<Contact> DeleteCurrentContact { get; set; }
+    private bool? DisplayInfo = false;
+
+}

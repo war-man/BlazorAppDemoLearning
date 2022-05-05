@@ -1,0 +1,57 @@
+﻿@using BlazorAppDemo.Models
+
+@* Way 1 : Chane value checkbox onchange*@
+<input type="checkbox" checked="@(DisplayEmail == true)" @onchange = "@(() => DisplayEmail = !DisplayEmail)"/>
+<label>Display Email</label>
+@* Way 2 *@
+@*<input type="checkbox" @bind="@DisplayEmail"/>
+<label>Display Email 1</label>*@
+
+
+
+
+@if(Contacts is null)
+{
+  @*throw new ArgumentNullException();*@ 
+    @NullContact
+}
+else if (!Contacts.Any())
+{
+    @EmptyContact
+}
+else
+{
+   @foreach(var i in Contacts)
+   {
+    <BlazorAppDemo.Pages.Components.ContactComponent 
+        FirstName="@i.FirstName"
+        LastName="@i.LastName"
+        Email="@i.Email"
+        Contact ="@i"
+        DisplayEmail = "@DisplayEmail"
+        DeleteCurrentContact = "@DeleteContact"
+    >
+    </BlazorAppDemo.Pages.Components.ContactComponent>
+   }
+<br/> 
+}
+
+@code {
+    [Parameter] public RenderFragment? NullContact{ get; set; }
+    [Parameter] public RenderFragment? EmptyContact{ get; set; }
+    [Parameter] public List<Contact>? Contacts { get; set; } = new();
+    private bool DisplayEmail { get; set; } = true;
+    private void DeleteContact(Contact contact!!)
+    {
+        if(Contacts == null)
+            ArgumentNullException.ThrowIfNull(Contacts);
+        if(Contacts is null)
+        {
+            Console.WriteLine(contact.Email ?? "null was passed");
+            throw new ArgumentNullException(nameof(Contacts));
+        }
+
+        else
+            Contacts.Remove(contact);
+    }
+}

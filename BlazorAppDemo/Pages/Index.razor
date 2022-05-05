@@ -2,42 +2,67 @@
 @using Microsoft.AspNetCore.Html
 <h3>
     Hello, @username.ToString() => @Getusername();
-    
+
 </h3>
 <button @onclick="ChangeName">Click 1</button>
 <button @onclick="@(() => {username = "Adam";})">Click 2</button>
 <p>@TestNum</p>
 <em>@(TestNum == 1 ? new HtmlString("hi") : new HtmlString("&nbsp;")) </em>
 @(TernaryOperator == "Raw" ? new HtmlString("<p>Raw HTML</p>") : new HtmlString(""))
-@for (int i = 0; i < name.Count(); i++)
+@if (name == null)
 {
-    <div>
-        @name[i]
-    </div>
+
 }
-@foreach (var item in name)
+else
 {
-    <span>@item.ToUpper()</span>
-}
-@code{
-    private List<string>? name = null;
-    protected override void OnInitialized()
+    @for (int i = 0; i < name.Count(); i++)
     {
-        base.OnInitialized();
-        name = new()
-        {
-            "Base1",
-            "Base1",
-            "Base1",
-            "Base1",
-            "Base1",
-            "Base1",
-        };
+        <div>
+            @name[i]
+        </div>
     }
-    private string username = "john";
-    private int TestNum { get; set; } = 1;
-    private string TernaryOperator = "Raw";
-    private string Getusername() => $"{username} Thomas";
-    private void ChangeName() => username = "Peter";
+    @foreach (var item in name)
+    {
+        <span>@item.ToUpper()</span>
+    }
+}
+
+<br />
+
+
+<BlazorAppDemo.Pages.Components.ContactList Contacts="Contacts">
+    <NullContact>
+        <br />
+        <span>Contacts are loading..</span>
+        <br />
+    </NullContact>
+    <EmptyContact>
+        <br />
+        <span>No Contacts to display</span>
+        <br />
+    </EmptyContact>
+
+</BlazorAppDemo.Pages.Components.ContactList>
+
+
+
+<BlazorAppDemo.Pages.Components.MyTextBox PlaceHolder="TestAction">
+</BlazorAppDemo.Pages.Components.MyTextBox>
+<BlazorAppDemo.Pages.Components.MyTextBox1 placeholder="placeholder 01"
+                                           type="text"
+                                           disabled="true">
+</BlazorAppDemo.Pages.Components.MyTextBox1>
+<BlazorAppDemo.Pages.Components.MyTextBox1 @attributes="@(new Dictionary<string,object>
+                 {
+                    {"disabled","disabled"},
+                    {"placeholder","New Contact"},
+                    {"type","text"}
+                 })">
+</BlazorAppDemo.Pages.Components.MyTextBox1>
+<BlazorAppDemo.Pages.Components.MyTextBox1 @attributes="@MyTextBoxAttributes">
+</BlazorAppDemo.Pages.Components.MyTextBox1>
+
+@code {
+    
 
 }
